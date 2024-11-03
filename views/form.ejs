@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>form</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "Noto Nastaliq Urdu", sans-serif;
+        box-sizing: border-box;
+        direction: rtl;
+      }
+
+      html {
+        font-size: 10px;
+      }
+
+      body {
+        padding: 20px;
+        background: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #282828;
+      }
+
+      form {
+        width: 90%;
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      form .input-fields {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      form input {
+        font-size: 1.4rem;
+        height: 40px;
+        padding-inline: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        width: 100%;
+      }
+
+      form input[type="submit"] {
+        background: lightseagreen;
+        color: white;
+        font-weight: 500;
+        height: 45px;
+        width: 150px;
+        cursor: pointer;
+      }
+
+      form button {
+        background: blue;
+        color: white;
+        font-weight: 500;
+        height: 45px;
+        width: 150px;
+        cursor: pointer;
+        margin-inline: 10px;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form action="/getdata" method="post">
+      <h1>رجشٹر</h1>
+
+      <div class="input-fields">
+        <input type="text" placeholder="نمبر شمار " name="SrNo" />
+        <input type="text" placeholder="کتاب نمبر" name="BookNumber" />
+        <input type="text" placeholder="اسمائے کتب" name="BookName" />
+        <input type="text" placeholder="زبان" name="Lang" />
+        <input type="text" placeholder="تعداد" name="Quantity" />
+        <input type="text" placeholder="حصے" name="Parts" />
+        <input type="text" placeholder="صفحات" name="Pages" />
+        <input type="text" placeholder="فن نمبر" name="FunNumber" />
+        <input type="text" placeholder="مؤلف / مرتب" name="Author" />
+        <input
+          type="text"
+          placeholder="مترجم / جمع و تقدیم"
+          name="Translator"
+        />
+        <input type="text" placeholder="ناشر / مطبخ" name="Publisher" />
+        <input type="text" placeholder="قیمت تخمیا" name="Price" />
+        <input type="text" placeholder="تاریخ خریدی" name="Date" />
+        <input type="text" placeholder="ایڈیشن" name="Edition" />
+        <input type="text" placeholder="سن اشاعت" name="PublicationDate" />
+        <input type="text" placeholder="کیفیات" name="Conditions" />
+      </div>
+
+      <input type="submit" value="ایڈ کریں" />
+      <button type="button">فائل ڈاونلوڈ کریں</button>
+    </form>
+
+    <script>
+      const btn = document.querySelector("button");
+      btn.onclick = function () {
+        fetch("/excel")
+          .then((response) => response.blob())
+          .then((blob) => {
+            // Create a link element
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "formData.xlsx"; // Name of the file to download
+            link.click(); // Trigger the download
+            // Clean up
+            URL.revokeObjectURL(link.href);
+          })
+          .catch((error) => {
+            console.error("Error downloading file:", error);
+          });
+      };
+    </script>
+  </body>
+</html>
